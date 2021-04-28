@@ -1,0 +1,55 @@
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\section{Constructing the Weak Formulation}
+
+To construct the weak formulation of the nondimensionalized 
+Schr\"odinger equation, consider a test function 
+$\phi(\vec x)$ which is sufficiently smooth
+(this will be clarified later). 
+Integrating against the Schr\"odinger equation gives
+\[
+		i\inner{\phi, \pder{\Psi}{t}}_{L^2} = 
+		\inner{\nabla \phi, \nabla \Psi}_{L^2} + 
+		\nu \inner{\phi, V \Psi}_{L^2}
+.\] 
+Where each integral is on all of $\R^2$.  
+Importantly, the quantity 
+$\Psi^* \Psi$ represents a probability density function (pdf) 
+for the particle.  
+As a result, since the probability the particle exists somewhere 
+in $\R^2$ is 1, $\Psi \in L^2(\R^2) \times C^1(\R_+) $.  
+Applying the same approach to the initial condition:
+$\Psi_0(\vec x) := \Psi(\vec x, 0)$ gives 
+\[
+		\inner{\nabla \phi, \nabla \Psi_0}_{L^2} + 
+		\nu \inner{\phi, V^{(0)} \Psi_0}_{L^2} = 
+		\epsilon \inner{\phi, \Psi_0}
+.\] 
+For the weak form to exist, 
+$\Psi \in H^1(\R^2) \times C^1(\R_+)$.  
+However there is more to it than this.  
+In quantum mechanics, the operator
+\[
+		\hat {\vec p} = -i \hbar \nabla
+\] 
+corresponds to the momentum of a particle;
+and the pdf for the momentum is represented by
+$\Psi^* \cdot \hat{\vec p}(\Psi)$ \cite{griffiths-quantum}.
+Consequentially, requiring the momentum be well defined everywhere
+necessitates $\Psi \in C^1(\R^2) \times C^1(\R_+)$.  
+To ensure this, we must therefore require 
+$\Psi \in H^2(\R^2) \times C^1(\R_+)$.  
+Therefore we can now construct the weak form of the problem
+\begin{gather}
+		i \inner{\phi, \pder{\Psi}{t}}_{L^2(\R^2)} = 
+		\inner{\nabla \phi, \nabla \Psi}_{L^2(\R^2)} + 
+		\nu \inner{\phi, V\Psi}_{L^2(\R^2)} \\
+		\inner{\nabla \phi, \nabla \Psi_0}_{L^2(\R^2)} + 
+		\nu \inner{\phi, V^{(0)} \Psi_0}_{L^2(\R^2)} = 
+		\epsilon_\mathrm{min} \inner{\phi, \Psi_0}_{L^2(\R^2)}, 
+		\quad \forall \phi \in H_0^2(\R^2)
+\end{gather}
+
+\end{document}
