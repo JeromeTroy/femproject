@@ -69,7 +69,7 @@ def crank_nicolson(tmax, y_init, nt, mass, stiffness, potential, nu):
 
     """
     dt = tmax / nt
-    y_vals = np.zeros([len(y_init), nt])
+    y_vals = np.zeros([len(y_init), nt]) + 0j
     y_vals[:, 0] = y_init
     
     A = 1j * mass - 0.5 * dt * (stiffness + nu * potential)

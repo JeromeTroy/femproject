@@ -9,25 +9,31 @@ Created on Tue Apr 27 19:14:04 2021
 import numpy as np
 import matplotlib.pyplot as plt
 
-from scipy.sparse import csr_matrix
 from scipy.linalg import eigh
 
 from fenics import FunctionSpace, interpolate, dot, grad, dx
 from fenics import TrialFunction, TestFunction, Function, plot
-from mshr import *
 
 from potential import CylindricalPotential
-from build_domain import mesh
+from build_domain import Domain, parameters
 from fenics_utils import convert_fenics_form_to_csr
 
+savename = parameters["initial_savefile"]
+
+domain_params = parameters["domain"]
+domain = Domain(width=domain_params["width"], 
+                length=domain_params["length"], 
+                resolution=domain_params["resolution"])
+
+mesh = domain.get_mesh()
+
 # setup potential
-radius = 1
-center = np.zeros(2)
-center[0] = -1
-nu = 50
+potential_params = parameters["original_potential"]
+nu = potential_params["nu"]
+
 potential_expression = CylindricalPotential()
-potential_expression.set_radius(radius)
-potential_expression.set_center(center)
+potential_expression.set_radius(potential_params["radius"])
+potential_expression.set_center(potential_params["center"])
 
 
 # V = H^2
@@ -59,6 +65,11 @@ eigvals, eigvecs = eigh(A.toarray(), b=M.toarray(),
 
 initial_condition = Function(H2)
 initial_condition.vector()[:] = np.power(eigvecs[:, selected_index], 2)
+
+save_array = np.zeros(len(eigvecs[:, selected_index]) + 1)
+save_array[:-1] = eigvecs[:, selected_index]
+save_array[-1] = eigvals[selected_index]
+np.savetxt(savename, save_array)
 
 fig = plot(initial_condition)
 plt.colorbar(fig)
