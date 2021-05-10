@@ -33,16 +33,16 @@
 			$\rho_\omega$:
 			\[
 					\rho_\omega(\vec x, t) = \Psi^*(\vec x, t) 
-					\hat{\mathcal O}\left[\Psi(\vec x, t)\right]
+					\hat{\mathcal O}\left[\Psi(\vec x, t)\right] 
 			\] 
-	\item Cannot know deterministic values, only probabilistic ones
   \end{itemize}
 \end{frame}
 
 \begin{frame}{A Simple Case}
   \begin{itemize}
-  	\item A single particle interacting with an external potential 
+  	\item Particles interacting with an external potential 
 			$V(\vec x)$ (time-independent, $\vec x \in \R^2$)
+	\item Particles do not interact with each other (linear PDE)
 	\item Energy: Kinetic + Potential
 	\item Kinetic: $\frac{1}{2m} \hat p^2$, mass $m$, 
 			\textit{momentum operator} $\hat{\vec p} = -i \hbar \nabla$
@@ -64,37 +64,74 @@
   \begin{itemize}
 	\item Particle ``trapped'' (in the classical regime) in a potential
 			well can escape!
-	\item Consider the following example \textbf{TODO}
+	\item Consider the following example 
+
+  \begin{center}
+  \includegraphics[width=0.5\textwidth]
+  {../writeup/sections/intro/system-sketch.png}
+  \end{center}
+
+	\item Particle may tunnel to other side of domain
   \end{itemize}
 \end{frame}
 
 \begin{frame}{FEM and Variational Form}
   \begin{itemize}
-	\item $\Psi \in H^4(\Omega) \times C(\R_+)$
-	\item Momentum: $\nabla \Psi$ must be continuous! 
-			$H^4(\Omega) \hookrightarrow C^2(\Omega)$
-	\item Variational form: $\Phi \in H^4_0(\Omega)$:
+	\item $\Psi \in H^1(\Omega) \times C(\R_+)$
+	\item Inner products (bra-ket notation):
 			\[
-					i \inner{\Phi, \partial_t \Psi}_{L^2(\Omega)} = 
-					\inner{\nabla \Phi, \nabla \Psi}_{L^2(\Omega)} + 
-					\inner{\Phi, V \Psi}_{L^2(\Omega)}
+					\bra{\phi}\ket{\psi} = \int_\Omega 
+					\phi^* \psi \, dx, \quad 
+					\bra{\phi} \mathcal O \ket{\psi} = 
+					\int_\Omega \phi^* \mathcal O(\psi) \, dx
+			.\] 
+	\item Variational form: $\Phi \in H^1_{D, \mathrm{in}}(\Omega)$
+			of the Schr\"odinger equation
+			\[
+			i \bra{\Phi} \partial_t \ket{\Psi} = 
+			\bra{\nabla \Phi} \ket{\nabla \Psi} + 
+			\bra{\Phi} V \ket{\Psi} + 
+			\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi}{n} \, d\sigma
 			\] 
+	\item $\Phi$ zero on outer boundary and input boundary, 
+			nonzero on other (blue boundaries), wave can escape this way
+
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Finite Dimensional FEM}
+\begin{itemize} 
+		\item Boundary wrapper:
+				\[
+						B(\Phi, \Psi) = \int_{\Gamma_\mathrm{out}}
+						\Phi \pder{\Psi}{n} \, d\sigma
+				.\] 
 		\item Build triangulation $\mathcal T_h$ on $\Omega$, let 
-			$\phi_j(\vec x)$ be a set of basis functions for $H^4_0(\Omega)$
+				$\phi_j(\vec x)$ be a set of basis functions for 
+				$H^1_{D, \mathrm{in}}(\Omega)$
 			\[\begin{split}
 					\implies i \sum_{k=1}^N 
-					& \inner{\phi_j, \phi_k}_{L^2(\Omega)} \alpha_k'(t) = \\
+					& \bra{\phi_j} \ket{\phi_k} \lambda_k'(t) = \\
 					& \sum_{k=1}^N \left[
-							\inner{\nabla \phi_j, \nabla \phi_k}_{L^2(\Omega)}
-					+ \inner{\phi_j, V \phi_k}_{L^2(\Omega)}\right] 
-					\alpha_k(t)
+					\bra{\nabla \phi_j} \ket{\nabla \phi_k}
+	       			+ \bra{\phi_j} V \ket{\phi_k} + 
+					B(\phi_j, \phi_k)
+			\right] 
+					\lambda_k(t)
 			\end{split}\] 
-	\item Matrix Form: mass matrix $M$, stiffness matrix $S$, 
-			$V_{jk} = \inner{\phi_j, V \phi_k}_{L^2(\Omega)}$
-			\[
-					M \vec \alpha' = (S + V) \vec \alpha
-			.\] 
-  \end{itemize}
+	\item Mass matrix: 
+			$\bra{\phi_j}\ket{\phi_k}$, 
+			Stiffness matrix:
+			$\bra{\nabla \phi_j}\ket{\nabla \phi_k}$,
+			``Potential'' matrix:
+			$\bra{\phi_j} V \ket{\phi_k}$, 
+			``Boundary'' matrix:
+			$B(\phi_j, \phi_k)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Time Stepping and Solution}
+  
 \end{frame}
 \begin{frame}{References}
 		\bibliography{../writeup/biblio.bib}

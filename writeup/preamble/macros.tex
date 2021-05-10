@@ -15,6 +15,9 @@
 % ams stuff
 \usepackage{amsthm, amsmath, amssymb, amsfonts}
 
+% physics
+\usepackage{physics}
+
 % bold math
 \usepackage{bbold, bm, bbm}
 
@@ -41,7 +44,7 @@
 
 % vectors and vector spaces
 \renewcommand{\vec}[1]{\bm{#1}}
-\newcommand{\norm}[1]{\left|\left| #1 \right|\right|}
+\renewcommand{\norm}[1]{\left|\left| #1 \right|\right|}
 \newcommand{\inner}[1]{\left\langle #1 \right\rangle}
 
 % special functions
@@ -51,7 +54,7 @@
 }
 
 % specify path relative to main.tex
-\input{preamble/trig}
+%\input{preamble/trig}
 
 % sets
 \newcommand{\R}{\mathbb{R}}
@@ -73,9 +76,9 @@
 		} \left[ #2 \right]
 }
 \renewcommand{\P}{\mathbb P}
-\newcommand{\var}[1]{
-		\mathrm{Var}\left( #1 \right)
-}
+%\newcommand{\var}[1]{
+%		\mathrm{Var}\left( #1 \right)
+%}
 \newcommand{\relent}[2]{
 		D_\mathrm{KL} \left(
 		#1 \mid \mid #2 \right)

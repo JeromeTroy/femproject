@@ -4,60 +4,133 @@
 Created on Tue Apr 27 18:55:47 2021
 
 @author: jerome
+
+Construct the domain for the problem
+This is a set of two tubes, on either side of a central ring.
+The domain itself is a rectangle.
+The tubes indicate where a potential is applied, and are stored
+as subdomains
 """
 
-from fenics import *
-from mshr import *
+from fenics import SubDomain, Point, near, MeshFunction, plot, RectangleMesh
+#from mshr import Rectangle, generate_mesh
+import numpy as np
+import matplotlib.pyplot as plt
 
-class Domain():
+# tolerances
+TOL = 1e-14
+
+# paramters
+tube_diameter = 1
+ring_inner_radius = 2
+tube_distance_from_boundary = 1
+
+domain_width = 10
+domain_length = 10
+
+domain_params = {"tol": TOL, 
+                 "tube_diameter": tube_diameter,
+                 "ring_inner_radius": ring_inner_radius, 
+                 "tube_distance_from_boundary": tube_distance_from_boundary,
+                 "domain_width": domain_width,
+                 "domain_length": domain_length}
+
+# build domain
+origin = Point(0, 0)
+far_corner = Point(domain_length, domain_width)
+
+def build_mesh(nx, ny):
     
-    def __init__(self, width=0, length=0, resolution=1):
-        
-        self.width = width
-        self.length = length
-        self.resolution = resolution
-        
-        self.x = self.width / 2
-        self.y = self.length / 2
-
-        self.build_domain()
-        
-    def build_domain(self):
-        
-        corners = [Point(-self.x, -self.y), 
-                   Point(self.x, self.y)]
-        self.domain = Rectangle(corners[0], corners[1])
-        
-        self.mesh = generate_mesh(self.domain, self.resolution)
-        
-    def get_mesh(self):
-        return self.mesh
+    if np.mean([nx, ny]) < 20:
+        print("WARNING! Mesh resolutions below 20 do not resolve geometry!")
     
-    def get_domain(self):
-        return self.domain
+    return RectangleMesh(origin, far_corner, nx, ny, "crossed")
+
+class InputTube(SubDomain):
+    
+    def inside(self, x, on_boundary):
         
+        return (tube_distance_from_boundary <= x[0]) and (
+            x[0] <= tube_distance_from_boundary + tube_diameter)
 
-parameters = {}
-mesh_params = {"width": 5, 
-               "length": 5, 
-               "resolution": 20}
-parameters["domain"] = mesh_params
+input_tube = InputTube()
+    
+class OutputTube(SubDomain):
+    
+    def inside(self, x, on_boundary):
+        
+        return (domain_length - tube_distance_from_boundary - tube_diameter <= 
+                x[0]) and (x[0] <= domain_length - tube_distance_from_boundary)
+    
+output_tube = OutputTube()
 
-original_potential = {"radius": 0.95,
-                      "center": [-1, 0], 
-                      "nu": 50}
+class RingResonator(SubDomain):
+    
+    def inside(self, x, on_boundary):
+        
+        x_from_center = x[0] - 0.5 * domain_length
+        y_from_center = x[1] - 0.5 * domain_width 
+        radius = np.sqrt(np.power(x_from_center, 2) + 
+                         np.power(y_from_center, 2))
+        
+        return (ring_inner_radius <= radius) and \
+            (radius <= ring_inner_radius + tube_diameter)
+            
+ring_resonator = RingResonator()
 
-parameters["original_potential"] = original_potential
+class InputBoundary(SubDomain):
+    
+    def inside(self, x, on_boundary):
+        
+        return near(x[1], 0, TOL) and input_tube.inside(x, on_boundary) and \
+            on_boundary
+    
+class OutputBoundary(SubDomain):
+    
+    def inside(self, x, on_boundary):
+        
+        on_input_outbound = near(x[1], domain_width, TOL) and \
+            input_tube.inside(x, on_boundary) and on_boundary
+            
+        on_output = output_tube.inside(x, on_boundary) and on_boundary
+        
+        return on_input_outbound or on_output
+   
+outbound = OutputBoundary()
 
-second_potential = {"radius": 0.95,
-                    "center": [1, 0],
-                    "nu": 50}
+class DirichletBoundary(SubDomain):
+    
+    def inside(self, x, on_boundary):
+        
+        return on_boundary and (not input_tube.inside(x, on_boundary)) and \
+            (not output_tube.inside(x, on_boundary))
+            
+  
+def mark_tubes(mesh):
+    
+    tubes = MeshFunction("size_t", mesh, 2)
+    input_tube.mark(tubes, 1)
+    output_tube.mark(tubes, 1)
+    ring_resonator.mark(tubes, 1)
+    
+    outbound.mark(tubes, 2)
+    
+    return tubes
 
-parameters["second_potential"] = second_potential
 
-parameters["initial_savefile"] = "initial_condition.txt"
-parameters["time_evolution_savefile"] = "time_evolution.txt"
+if __name__ == "__main__":
+    
+    print("Building test mesh")
+    
+    nx = 40
+    mesh = build_mesh(nx, nx)
+    
+    print("Marking tubes")
+    tubes = mark_tubes(mesh)    
 
-time_stepping = {"tmax": 40,
-                 "nt": 400}
-parameters["time_stepping"] = time_stepping
+    print("Plotting")
+    plot(mesh)
+    plt.show()
+    
+    plot(tubes)
+    plt.show()    

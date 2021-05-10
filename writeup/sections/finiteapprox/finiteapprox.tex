@@ -3,66 +3,74 @@
 \begin{document}
 \section{Finite Dimensional Approximation}
 
-To build a finite dimensional version for our problem
-to apply finite elements, 
-first we make the following approximation.
-Let $\Omega \subset \R^2$ be bounded with 
-$\Omega_0, \Omega_1 \subset \Omega$ and with
+Since FEniCS cannot handle complex numbers, we are considering the 
+real and imaginary components of $\Psi$ separately. 
+To that end, thus far all variational terms are between real functions.
+Next, we suppose
 \[
-		\max\{\mathrm{diam}(\Omega_0), 
-		\mathrm{diam}(\Omega_1)\} \ll 
-		\mathrm{diam}(\Omega)
+  \Psi = \Psi_R + i \Psi_I
 .\] 
-We will then approximation the solution $\Psi$ and its 
-initial condition, $\Psi_0$ on $\Omega$, 
-by applying the boundary condition
+Where $\Psi_{R, I}$ are real functions corresponding to the 
+real and imaginary components of $\Psi$ respectively.  
+Let $H^1(\Omega)$ be the function space considered
+(Note however that the potential needs to only live in $L^2$).
+Let $\psi_\ell$ be the $\ell$'th basis function in the 
+finite dimensional approximation of $H^1$, which is build on top of 
+a mesh built in FEniCS.  
+FEM demands
 \[
-		\left.\Psi_{(0)}\right|_{\partial \Omega} = 0
+		\Psi = \sum_\ell \lambda_\ell(t) \phi_\ell, \quad 
+		\lambda_\ell : \R^+ \to \C
 .\] 
+Here $\lambda_\ell$ are the (complex) scalings of the basis functions.
+This takes care of the fact that $\Psi$ is complex. 
 
-Next let $\mathcal T$ be a triangulation for $\Omega$,
-and on this triangulation we 
-\textbf{TOOD: specify finite element in form $(K, P, N)$}.
-Let $V$ be the finite dimensional restriction of $H_0^2$ onto 
-this triangulation, and let 
-$\{\phi_\ell\}_{\ell=0}^M$ be a basis for $V$.
+Now the bra-ket notation can really shine.  In the ket $\ket{\Psi}$, 
+$\Psi$ is just a dummy indicator.  So it can be anything we want.
+To that end, let
+\[
+		\bra{k} \ket{\ell} = \int_\Omega \psi_k \psi_\ell \, dx, \quad
+		\bra{D, k} \ket{D, \ell} = 
+		\int_\Omega \nabla \psi_k \cdot \nabla \psi_\ell \, dx
+.\] 
+And so on... This means the mass, stiffness and potential 
+matrices are indexed by
+\[
+		M_{k\ell} = \bra{k} \ket{\ell}, \quad 
+		S_{k\ell} = \bra{D, k} \ket{D, \ell}, \quad 
+		V_{k\ell} = \bra{k} V \ket{\ell} = 
+		\int_\Omega \psi_k V \psi_\ell \, dx
+.\] 
+We also denote a boundary operator:
+\[
+		B_{k \ell} = \int_{\Gamma_\mathrm{out}} \psi_k \psi_\ell \, d\sigma
+.\] 
+Then the finite dimensional variational form reads
+\begin{equation}
+		\begin{split}
+		\label{eq:fd-variational}
+		\sum_\ell &\left(i \bra{k}\ket{\ell} - 
+				\frac{\Delta t}{2} \bra{D, k}\ket{D, \ell} - 
+				\frac{\nu \Delta t}{2} \bra{k} V \ket{\ell} - 
+				i B_{k \ell} 
+		\right) \lambda_\ell^{n+1} = \\
+		& \sum_\ell \left(i \bra{k}\ket{\ell} + 
+				\frac{\Delta t}{2} \bra{D, k} \ket{D, \ell} + 
+				\frac{\nu \Delta t}{2} \bra{k} V \ket{\ell} - 
+				i B_{k \ell}
+		\right) \lambda_\ell^n
+		\end{split}
+\end{equation} 
+ 
+Finally the boundary conditions.
+All remaining boundary conditions are Dirichlet.  
+Let $I_D$ correspond to the indices of coordinates on $\Gamma_D$ 
+and $I_\mathrm{in}$ those on $\Gamma_\mathrm{in}$.  
+These indices can be extracted in the above matrices,
+and assigned in $\lambda^{n+1}$ after solving.
+The remaining indices:
+$I_\mathrm{free}$ are the free indices which need to be solved to 
+determine the appropriate values.
 
-Suppose that 
-\[
-		\Psi_0(\vec x) = \sum_{\ell=0}^M \alpha^{(0)}_\ell \phi_\ell(\vec x),
-		\quad \Psi(\vec x, t) = 
-		\sum_{\ell=0}^M \alpha_\ell(t) \phi_\ell(\vec x), \quad 
-		\alpha_\ell(0) = \alpha^{(0)}_\ell
-.\] 
-The variational form of the problem then becomes:
-\begin{gather}
-		i \sum_{k=0}^M \inner{\phi_\ell \phi_k}_{L^2(\Omega)} \alpha_k' = 
-		\sum_{k=0}^M \inner{\nabla \phi_\ell, \nabla \phi_k}_{L^2(\Omega)}
-		\alpha_k + \nu \inner{\phi_\ell, V \phi_k}_{L^2(\Omega)} \alpha_k \\
-		\sum_{k=0}^M \inner{\nabla \phi_\ell, \nabla \phi_k}_{L^2(\Omega)} 
-		\alpha_k^{(0)} + 
-		\nu \inner{\phi_\ell, V^{(0)} \phi_k}_{L^2(\Omega)} \alpha_k = 
-		\epsilon_\mathrm{min} \inner{\phi_\ell, \phi_k}_{L^2(\Omega)} \alpha_k	
-\end{gather}
-Finally, let 
-\[
-		M_{ij} = \inner{\phi_i, \phi_j}_{L^2(\Omega)}, \quad 
-		S_{ij} = \inner{\nabla \phi_i, \nabla \phi_j}_{L^2(\Omega)}, \quad
-		V_{ij} = \inner{\phi_i, V \phi_j}_{L^2(\Omega)}
-.\] 
-Similarly for $V^{(0)}_{ij}$.
-The problem then reads in matrix form
-\begin{gather}
-  i M \alpha' = S \alpha + \nu V \alpha \\
-  S \alpha^{(0)} + \nu V^{(0)} \alpha^{(0)} = 
-  \epsilon_\mathrm{min} M \alpha^{(0)}
-\end{gather}
 
-The problem is now a set of coupled ODEs.  
-Furthermore, the initial condition $\alpha^{(0)}$ satisfies 
-the modified eigenvalue problem
-\[
-		(S + \nu V^{(0)}) \alpha^{(0)} = 
-		\epsilon_\mathrm{min} M \alpha^{(0)}
-.\] 
 \end{document}

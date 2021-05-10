@@ -4,52 +4,141 @@
 
 \section{Constructing the Weak Formulation}
 
-To construct the weak formulation of the nondimensionalized 
-Schr\"odinger equation, consider a test function 
-$\phi(\vec x)$ which is sufficiently smooth
-(this will be clarified later). 
-Integrating against the Schr\"odinger equation gives
+Since FEniCS will be doign the heavy lifting for the matrix construction
+and equation solving, the weak formulation will be optimized to fit 
+this framework.  
+FEniCS is designed around elliptic-like problems,
+so the problem will be discretized in time first, 
+then each update will be computed by solving an elliptic problem.
+
+The time discretization applied to the Schr\"odinger equation gives
 \[
-		i\inner{\phi, \pder{\Psi}{t}}_{L^2} = 
-		\inner{\nabla \phi, \nabla \Psi}_{L^2} + 
-		\nu \inner{\phi, V \Psi}_{L^2}
+		i \frac{\Psi^{n+1}(\vec x) - \Psi^n(\vec x)}{\Delta t} = 
+		\frac{1}{2} \left[-\nabla^2 \Psi^{n+1} - 
+		\nabla^2 \Psi^n + \nu V \Psi^{n+1} + \nu V \Psi^n\right]
 .\] 
-Where each integral is on all of $\R^2$.  
-Importantly, the quantity 
-$\Psi^* \Psi$ represents a probability density function (pdf) 
-for the particle.  
-As a result, since the probability the particle exists somewhere 
-in $\R^2$ is 1, $\Psi \in L^2(\R^2) \times C^1(\R_+) $.  
-Applying the same approach to the initial condition:
-$\Psi_0(\vec x) := \Psi(\vec x, 0)$ gives 
+Where $t^n = n \Delta t$ and 
+$\Psi^n(\vec x) = \Psi(\vec x, t^n)$.  
+Crank-Nicolson can be shown to be second order in time.
+
+Rearranging this above expression gives
 \[
-		\inner{\nabla \phi, \nabla \Psi_0}_{L^2} + 
-		\nu \inner{\phi, V^{(0)} \Psi_0}_{L^2} = 
-		\epsilon \inner{\phi, \Psi_0}
+		i \Psi^{n+1} + \frac{\Delta t}{2} \nabla^2 \Psi^{n+1} - 
+		\frac{\nu \Delta t}{2} V \Psi^{n+1} = 
+		i \Psi^n - \frac{\Delta t}{2} \nabla^2 \Psi^n + 
+		\frac{\nu \Delta t}{2} V \Psi^n
 .\] 
-For the weak form to exist, 
-$\Psi \in H^1(\R^2) \times C^1(\R_+)$.  
-However there is more to it than this.  
-In quantum mechanics, the operator
+At each time step, we can assume $\Psi^n$ is known, 
+with $\Psi^0 \equiv 0$ by the initial condition. 
+Therefore this is now an elliptic problem for the $n+1$'st time step.
+
+Next, for a quantum mechanical problem: the wavefunction
+must be continuously differentiable, which ensures 
+that position and momentum are well defined everywhere.
+To guarentee this in $\R^2$ we require 
+$\Psi \in H^4(\Omega)$.  
+
+To build the weak form, let 
 \[
-		\hat {\vec p} = -i \hbar \nabla
-\] 
-corresponds to the momentum of a particle;
-and the pdf for the momentum is represented by
-$\Psi^* \cdot \hat{\vec p}(\Psi)$ \cite{griffiths-quantum}.
-Consequentially, requiring the momentum be well defined everywhere
-necessitates $\Psi \in C^1(\R^2) \times C^1(\R_+)$.  
-To ensure this, we must therefore require 
-$\Psi \in H^2(\R^2) \times C^1(\R_+)$.  
-Therefore we can now construct the weak form of the problem
-\begin{gather}
-		i \inner{\phi, \pder{\Psi}{t}}_{L^2(\R^2)} = 
-		\inner{\nabla \phi, \nabla \Psi}_{L^2(\R^2)} + 
-		\nu \inner{\phi, V\Psi}_{L^2(\R^2)} \\
-		\inner{\nabla \phi, \nabla \Psi_0}_{L^2(\R^2)} + 
-		\nu \inner{\phi, V^{(0)} \Psi_0}_{L^2(\R^2)} = 
-		\epsilon_\mathrm{min} \inner{\phi, \Psi_0}_{L^2(\R^2)}, 
-		\quad \forall \phi \in H_0^2(\R^2)
-\end{gather}
+		\mathcal V = \{u \in H^4(\Omega) : 
+		\left.u\right|_{\Gamma_D \cup \Gamma_\mathrm{in}} = 0\}
+.\] 
+This will be our test function space.
+Let $\Phi \in \mathcal V$.  Then the weak formulation 
+comes from 3 terms:
+\[
+  \int_\Omega \Phi \Psi \, dx, \quad 
+  \int_\Omega \Phi \nabla^2 \Psi \, dx, \quad 
+  \int_\Omega \Phi V \Psi \, dx
+.\] 
+Here we are considering the real and imaginary components of $\Psi$ separately.
+In sticking with the quantum mechanical theme, 
+I will be using bra-ket notation.
+That is 
+$\Psi$ will be known as $\ket{\Psi}$.  
+The bar and angle denote that $\Psi$ is an element of the 
+Hilbert space $\mathcal V$. 
+Next I will denote the linear functional:
+\[
+		\bra{\Phi} \cdot = \int_\Omega \Phi \cdot \, dx
+.\]
+That is $\bra{\Phi}$ is the linear functional 
+built by the $L^2$ inner product with $\ket{\Phi}$.  
+Finally an inner product with an operator $\mathcal O$ will be denoted:
+\[
+		\bra{\Phi} \mathcal O \ket{\Psi} = 
+		\int_\Omega \Phi \mathcal O(\Psi) \, dx
+.\] 
+The first and second components of the variational form 
+are not interesting.  
+Instead what is interesting is the middle term.
+\[
+  \begin{split}
+		  \int_\Omega \Phi \nabla^2 \Psi \, dx 
+		  & = \bra{\Phi}\nabla^2 \ket{\Psi} \\
+		  & = \int_{\partial \Omega} \Phi \pder{\Psi}{n} \, d\sigma - 
+		  \int_\Omega \nabla \Phi \cdot \nabla \Psi \, dx \\
+		  & = \int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi}{n} \, d\sigma - 
+		  \bra{\nabla \Phi}\ket{\nabla \Phi}
+  \end{split}
+.\] 
+Due to the boundary condition on $\Gamma_\mathrm{out}$, we know
+\[
+		\pder{\Psi}{t} = i \pder{\Psi}{n}
+.\] 
+Using the Crank-Nicolson time discretization on the boundary
+changes this to
+\[
+		\frac{\Psi^{n+1} - \Psi^n}{\Delta t} = 
+		\frac{i}{2} \left(\pder{\Psi^{n+1}}{n} + \pder{\Psi^n}{n}\right)
+.\] 
+Therefore
+\[
+		\int_{\Gamma_\mathrm{out}} \Phi \Psi^{n+1} \, d\sigma - 
+		\frac{i \Delta t}{2} 
+		\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^{n+1}}{n} \, d\sigma = 
+		\int_{\Gamma_\mathrm{out}} \Phi \Psi^n \, d\sigma + 
+		\frac{i \Delta t}{2} 
+		\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^n}{n} \, d\sigma
+.\] 
+Giving
+\[
+		\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^{n+1}}{n} \, d\sigma = 
+		\frac{2i}{\Delta t} \left(
+				-\int_{\Gamma_\mathrm{out}} \Phi \Psi^{n+1} \, d\sigma + 
+				\int_{\Gamma_\mathrm{out}} \Phi \Psi^n \, d\sigma + 
+				\frac{i \Delta t}{2} 
+				\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^n}{n} \, d\sigma
+		\right)
+.\] 
+Therefore the weak form of the PDE reads
+\begin{equation}
+		\label{eq:weak-form-mark-1}
+		\begin{split}
+				i \bra{\Phi}\ket{\Psi^{n+1}} 
+				& - 
+				\frac{\Delta t}{2} \bra{\nabla \Phi}\ket{\nabla \Psi^{n+1}} -
+				\frac{\nu \Delta t}{2} \bra{\Phi} V \ket{\Psi^{n+1}} -
+				i \int_{\Gamma_\mathrm{out}} \Phi \Psi^{n+1} \, d\sigma = \\
+				& i \bra{\Phi}\ket{\Psi^n} + 
+				\frac{\Delta t}{2} \bra{\nabla \Phi}\ket{\nabla \Psi^n} + 
+				\frac{\nu \Delta t}{2} \bra{\Phi} V \ket{\Psi^n} - 
+				i \int_{\Gamma_\mathrm{out}} \Phi \Psi^n \, d\sigma 
+		\end{split}
+\end{equation}
+
+FEniCS uses UFL - unified form assembly language, which 
+is able to take a (nearly verbatim mathematically formatted) 
+variational form, and convert this into a matrix system and solve 
+automatically.  
+The only adjustment that needs to be made is to the boundary integrals. 
+To enforce the integration take place only on 
+$\Gamma_{\mathrm{out}}$, we use 
+\[
+		\int_{\Gamma_\mathrm{out}} \Phi \Psi \, d\sigma = 
+		\int_{\partial \Omega} \Phi \mathbbm 1(\vec x \in \Gamma_\mathrm{out})
+		\Psi \, d\sigma
+.\] 
+
 
 \end{document}

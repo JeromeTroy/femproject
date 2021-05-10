@@ -12,13 +12,191 @@
    viewBox="0 0 210 297"
    version="1.1"
    id="svg8"
-   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15, custom)"
    sodipodi:docname="system-sketch.svg"
    inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/system-sketch.png"
    inkscape:export-xdpi="96"
    inkscape:export-ydpi="96">
   <defs
-     id="defs2" />
+     id="defs2">
+    <marker
+       style="overflow:visible;"
+       id="marker2074"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path2072" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1978"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1976" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1894"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1892" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1790"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1788" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1676"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1674" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1592"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1590" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1534"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1532" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1482"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1480" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="marker1408"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1406" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="marker1398"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path1396" />
+    </marker>
+    <marker
+       style="overflow:visible;"
+       id="Arrow1Lend"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lend"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) rotate(180) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path906" />
+    </marker>
+    <marker
+       style="overflow:visible"
+       id="Arrow1Lstart"
+       refX="0.0"
+       refY="0.0"
+       orient="auto"
+       inkscape:stockid="Arrow1Lstart"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         transform="scale(0.8) translate(12.5,0)"
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1pt;stroke-opacity:1;fill:#000000;fill-opacity:1"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         id="path903" />
+    </marker>
+  </defs>
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -26,18 +204,22 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.0599799"
-     inkscape:cx="249.70385"
-     inkscape:cy="509.99459"
+     inkscape:zoom="0.865627"
+     inkscape:cx="364.99621"
+     inkscape:cy="467.56886"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1896"
-     inkscape:window-height="962"
+     inkscape:window-height="964"
      inkscape:window-x="12"
      inkscape:window-y="44"
-     inkscape:window-maximized="0" />
+     inkscape:window-maximized="0"
+     inkscape:snap-smooth-nodes="true"
+     inkscape:snap-intersection-paths="true"
+     inkscape:snap-midpoints="true"
+     inkscape:snap-object-midpoints="true" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -46,7 +228,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -55,71 +237,315 @@
      inkscape:groupmode="layer"
      id="layer1">
     <rect
-       style="fill:#b3b3b3;fill-rule:evenodd;stroke:#000000;stroke-width:0.46114;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
-       id="rect833"
-       width="124.57694"
-       height="73.210518"
-       x="35.909252"
-       y="88.698532" />
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.245656;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
+       id="rect2236"
+       width="159.39813"
+       height="159.83578"
+       x="18.689932"
+       y="43.211658" />
+    <rect
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.499999;stroke-linecap:round"
+       id="rect956"
+       width="107.30609"
+       height="107.30609"
+       x="35.180145"
+       y="69.476509"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 88.833189,69.476508 H 35.180145"
+       id="path958"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 62.006667,176.7826 V 69.476508 H 35.180145"
+       id="path960"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 48.593406,69.476508 V 176.7826"
+       id="path962"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#0000ff;fill-rule:evenodd;stroke:#000000;stroke-width:0.499999;stroke-linecap:round"
+       id="rect964"
+       width="13.41326"
+       height="107.30609"
+       x="48.593403"
+       y="69.476509"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 88.833189,69.476508 H 142.48624"
+       id="path966"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <rect
+       style="fill:#0000ff;fill-rule:evenodd;stroke:#000000;stroke-width:0.499999;stroke-linecap:round"
+       id="rect968"
+       width="13.41326"
+       height="107.30609"
+       x="115.65971"
+       y="69.476509"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
     <circle
-       style="fill:#0066ff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.669263;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
-       id="path835"
-       cx="70.557961"
-       cy="126.55696"
-       r="13.137534" />
+       style="fill:#0000ff;fill-rule:evenodd;stroke:#000000;stroke-width:0.499999;stroke-linecap:round"
+       id="path970"
+       cx="88.833191"
+       cy="123.12955"
+       r="19.210945"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <circle
+       style="fill:#ffffff;fill-rule:evenodd;stroke:#000000;stroke-width:0.499999;stroke-linecap:round"
+       id="path972"
+       cx="88.833191"
+       cy="123.12955"
+       r="9.5558033"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <g
+       id="g1290"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 142.48624,69.476508 h 17.10957"
+         id="path897" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 142.48624,176.78259 h 17.10957"
+         id="path899" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.26499999;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none;marker-start:url(#Arrow1Lstart);marker-end:url(#Arrow1Lend)"
+         d="M 151.04102,69.476508 V 176.78259"
+         id="path901" />
+    </g>
     <text
        xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="92.857864"
-       y="109.31094"
-       id="text843"><tspan
+       x="154.08589"
+       y="123.57876"
+       id="text1261"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
-         id="tspan841"
-         x="92.857864"
-         y="109.31094"
-         style="font-size:4.93889px;stroke-width:0.264583">V=0</tspan></text>
+         id="tspan1259"
+         x="154.08589"
+         y="123.57876"
+         style="font-size:5.64444px;stroke-width:0.264583">W</tspan></text>
+    <g
+       id="g1322"
+       transform="rotate(-90,151.04102,185.33738)"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 142.48624,69.476508 h 17.10957"
+         id="path1316" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 142.48624,176.78259 h 17.10957"
+         id="path1318" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker1398);marker-end:url(#marker1408)"
+         d="M 151.04102,69.476508 V 176.78259"
+         id="path1320" />
+    </g>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.93889px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;baseline-shift:baseline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="61.122494"
-       y="127.25464"
-       id="text847"><tspan
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="85.552086"
+       y="192.64006"
+       id="text1458"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
-         id="tspan845"
-         x="61.122494"
-         y="127.25464"
-         style="font-size:4.93889px;baseline-shift:baseline;stroke-width:0.264583">V = -V<tspan
-   style="font-size:4.93889px;baseline-shift:sub"
-   id="tspan849">0</tspan></tspan></text>
-    <circle
-       style="fill:#0066ff;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:0.669263;stroke-linecap:round;stroke-miterlimit:4;stroke-dasharray:none"
-       id="circle889"
-       cx="120.82773"
-       cy="126.55696"
-       r="13.137534" />
+         id="tspan1456"
+         x="85.552086"
+         y="192.64006"
+         style="font-size:5.64444px;stroke-width:0.264583">L</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.93889px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;baseline-shift:baseline;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="111.40635"
-       y="127.25464"
-       id="text855"><tspan
+       style="font-style:normal;font-weight:normal;font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="83.501755"
+       y="163.94241"
+       id="text1462"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
-         id="tspan853"
-         x="111.40635"
-         y="127.25464"
-         style="font-size:4.93889px;baseline-shift:baseline;stroke-width:0.264583">V = -V<tspan
-   style="font-size:4.93889px;baseline-shift:sub"
-   id="tspan851">0</tspan></tspan></text>
+         id="tspan1460"
+         x="83.501755"
+         y="163.94241"
+         style="font-size:5.64444px;stroke-width:0.264583">V=0</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:4.93889px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
-       x="61.350166"
-       y="133.70917"
-       id="text887"><tspan
+       style="font-style:normal;font-weight:normal;font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="80.38105"
+       y="88.608795"
+       id="text1466"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
-         id="tspan885"
-         x="61.350166"
-         y="133.70917"
-         style="font-size:4.93889px;stroke-width:0.264583">Particle</tspan></text>
+         id="tspan1464"
+         x="80.38105"
+         y="88.608795"
+         style="font-size:5.64444px;stroke-width:0.264583">V=-1</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1534)"
+       d="M 77.524059,88.951696 57.004068,102.44971"
+       id="path1468"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1676)"
+       d="M 85.964838,89.911176 81.138225,109.13954"
+       id="path1666"
+       sodipodi:nodetypes="cc"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker1592)"
+       d="m 92.117676,89.911176 27.811274,6.018172"
+       id="path1738"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 48.593406,69.476508 V 54.383619"
+       id="path1758"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       d="M 62.006663,69.476509 V 54.38362"
+       id="path1760"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1482);marker-end:url(#marker1790)"
+       d="M 48.593406,61.930062 H 62.006662"
+       id="path1762"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="53.177139"
+       y="57.853455"
+       id="text1866"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan1864"
+         x="53.177139"
+         y="57.853455"
+         style="font-size:5.64444px;stroke-width:0.264583">d</tspan></text>
+    <g
+       id="g1874"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 88.833189,132.68535 h 7.825094"
+         id="path1868" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 81.008095,132.68535 h 7.825094"
+         id="path1870" />
+    </g>
+    <g
+       id="g1880"
+       transform="translate(1.9179687e-6,9.6551422)"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 88.833189,132.68535 h 7.825094"
+         id="path1876" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+         d="m 81.008095,132.68535 h 7.825094"
+         id="path1878" />
+    </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1894)"
+       d="m 88.833189,132.68535 v -4.93029"
+       id="path1884"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-start:url(#marker1978)"
+       d="m 88.833189,142.34049 v 7.57587"
+       id="path1968"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.5833px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="86.847733"
+       y="139.50342"
+       id="text2060"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan2058"
+         x="86.847733"
+         y="139.50342"
+         style="font-size:5.64444px;stroke-width:0.264583">d</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker2074)"
+       d="M 55.300033,176.78259 V 156.59046"
+       id="path2064"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:5.64444px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.264583"
+       x="47.87693"
+       y="182.66405"
+       id="text2162"
+       inkscape:export-filename="/home/jerome/Documents/academics/spring-2021/m838-fem/project/writeup/sections/rect956.png"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96"><tspan
+         sodipodi:role="line"
+         id="tspan2160"
+         x="47.87693"
+         y="182.66405"
+         style="font-size:5.64444px;stroke-width:0.264583">input</tspan></text>
   </g>
 </svg>

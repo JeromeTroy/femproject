@@ -4,32 +4,31 @@
 Created on Tue Apr 27 18:51:04 2021
 
 @author: jerome
+
+Construction for the potential of the problem
+Requires build_domain.
+Constructs a potential which takes on value -1 inside the designated 
+subdomains from build_domain, and 0 everywhere else
 """
 
 import numpy as np
+import matplotlib.pyplot as plt
 
-from fenics import UserExpression
+from fenics import UserExpression, plot, FunctionSpace, interpolate
+
+from build_domain import build_mesh, mark_tubes
 
 
-class CylindricalPotential(UserExpression):
+class Potential(UserExpression):
     """
-    Zero everywhere except inside a circle of radius R around a designated
+    Zero everywhere except inside a designated region
     point
     """
-    
-    def __init__(self):
-        super().__init__()
+
+    def set_tubes(self, tubes):
+        self.tubes = tubes        
         
-        self.center = np.zeros(2)
-        self.radius = 1
-        
-    def set_center(self, center):
-        self.center = center
-        
-    def set_radius(self, radius):
-        self.radius = radius
-        
-    def eval(self, value, x):
+    def eval_cell(self, value, x, cell):
         """
         Evaluate function and assign its value to 'value' variable
         Evaluates to -1 inside the circle and 0 elsewhere
@@ -47,14 +46,11 @@ class CylindricalPotential(UserExpression):
 
         """
         
-        shifted_x = x - self.center
-        r = np.linalg.norm(shifted_x)
-        
-        if r < self.radius:
-            value[0] = -1.0
+        if self.tubes[cell.index] == 1:
+            value[0] = 0
             
         else:
-            value[0] = 0.0
+            value[0] = 1
         
         
     def value_shape(self):
@@ -69,7 +65,62 @@ class CylindricalPotential(UserExpression):
         """
         return ()
         
+class OutboundExtractor(Potential):
+    """
+    Extracts boundary term which is only on outbound sides
+    Implements same methods as Potential, overrides evel_cell
+    """
+    
+    def eval_cell(self, value, x, cell):
+        """
+        Evaluates function and assigns value
+        1 on outbound boundary
+        0 elsewhere
+
+        Parameters
+        ----------
+        value : basically a pointer
+            value to be assigned.
+        x : array of length 2
+            coordinate to be evaluated.
+        cell : mesh cell
+            cell in question.
+
+        Returns
+        -------
+        None.
+
+        """
+        if self.tubes[cell.index] == 2:
+            value[0] = 1
+        
+        else:
+            value[0] = 0
+            
+     
 if __name__ == "__main__":
-    print("I am a test")
+    
+    print("Building domain")
+    
+    nx = 20
+    mesh = build_mesh(nx, nx)
+    tubes = mark_tubes(mesh)
+    
+    print("Building potential")
+    v = Potential(degree=1)
+    v.set_tubes(tubes)
+
+    
+    plot(v, mesh=mesh)
+    plt.show()
+    
+    L2 = FunctionSpace(mesh, "CG", 1)
+    v_proj = interpolate(v, L2)
+    
+    plot(v_proj)
+    plt.show()
+    
+    print(v_proj.vector()[:])
+    
 
 

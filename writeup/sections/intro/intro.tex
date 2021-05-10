@@ -20,55 +20,58 @@ and $\hbar$ is Planck's constant divided by $2\pi$
 \cite{griffiths-quantum}.  
 
 We consider the following scenario. 
-A single particle is confined to an infinitely long cylinder.
-This may be approximated as a two dimensional problem,
-applying symmetry along the length of the cylinder.
-We suppose the cylinder corresponds to a potential well,
-posing a potential barrier at the boundary of the cylinder to
-the rest of $\R^2$.  
-
-We suppose further there is a second cylinder in the 
-vincinity of the first and parallel to it, with its own potential well.
-We ask the question: what is the probability the particle will 
-tunnel from the first cylinder to the second?
-The situation can be summarized in figure \ref{fig:system-sketch}.
+A particle is confined to a well in $\R^2$.  
+It passes by a ring-shaped well which is connected to a 
+second well leaving the system
+(see figure \ref{fig:system-sketch}).
+Such a situation is the problem of interest in characterizing
+quantum ring resonators \textbf{TODO: citation}.
 
 \begin{figure}[h]
 		\centering
 		\includegraphics[width=0.5\textwidth]{system-sketch.png}
-		\caption{Two cylindrical potential wells}
+		\caption{Sketch of Ring resonator. 
+		The domain excluding the shaded regions is $\Omega_0$. 
+		The two shaded rectangles are $\Omega_1$ and $\Omega_2$ from
+		left to right.  Finally the center ring is 
+		$\Omega_3$.  
+		The entire domain is $\Omega = \Omega_0 \cup \Omega_1 \cup 
+		\Omega_2 \cup \Omega_3.$}
 		\label{fig:system-sketch}
 \end{figure}
 
-To solve this problem using finite elements, first we must compute the weak 
-form, then construct the finite dimensional representation.  
-Finally, an initial condition must be specified.  
-Then solving the problem is the same as evolving the system
-forward in time.  
+We will solve this problem using finite elements, and using 
+the Python library FEniCS, which will take care of the heavy lifiting
+in constructing the finite element representation, as well as solving
+the resulting linear algebra system.
 
-To introduce notation, let $\Omega_0$ denote the first cylinder and 
-$\Omega_1$ denote the second (the one without the particle initially).
-We suppose the radius of each is $R$ and the distance between their
-centers is $L > 2 R$.
+Let $\Omega_0$ be the region without color, a rectangle of width 
+$W$ and length $L$, excluding the colored regions.
+The two long rectangles, in order from left to right are $\Omega_1$ and 
+$\Omega_2$ respectively.  Finally, the ring in the center is 
+$\Omega_3$.
+
+
 
 \subsection{Nondimensionalization}
 
 Nondimensionalizing the problem is essential since 
 $\hbar \approx 10^{-34} J \cdot s$ in S.I. units.  
-Let the spacial scaling be $R$, the radius of each of the 
-cylinders.  
+Let the spacial scaling be $d$, the width of each of the long potential 
+wells.  
 This induces a time scaling of 
-$\frac{2m R^2}{\hbar}$.  
-Finally there is an energy scaling of $V_0$.  
+$\frac{2m d^2}{\hbar}$.  
+Finally there is an energy scaling of $V_0$, which characterizes the 
+strength of the potential.
 To summarize, 
 if $\tilde{\vec x}, \tilde t, \tilde V$ all have units, then
 \begin{equation}
 		\label{eq:nd}
-		\tilde{\vec x} = R \vec x, \quad 
-		\tilde t = \frac{2m R^2}{\hbar} t, \quad 
+		\tilde{\vec x} = d \cdot \vec x, \quad 
+		\tilde t = \frac{2m d^2}{\hbar} t, \quad 
 		\tilde V(\tilde{\vec x}) = V_0 V(\vec x)
 .\end{equation}
-Let $\nu = \frac{2mR^2 V_0}{\hbar^2}$.  
+Let $\nu = \frac{2md^2 V_0}{\hbar^2}$.  
 The nondimensionalized problem then reads
 \begin{equation}
 		\label{eq:schrodinger-nondim}
@@ -79,58 +82,44 @@ Here, the form of $V(\vec x)$ is
 		\label{eq:potential-nondim}
 		V(\vec x) = 
 		\begin{cases}
-				-1 & \vec x \in \Omega_0 \cup \Omega_1 \\
-				0 & \text{otherwise}
+				-1 & \vec x \in \Omega_1 \cup \Omega_2 \cup \Omega_3 \\
+				0 & \vec x \in \Omega_0
 		\end{cases}
 .\end{equation}
 
-\subsection{Boundary Conditions}
+\subsection{Boundary and Initial Conditions}
 
-Since we are considering the problem defined on all of 
-$\R^2$, the required boundary conditions are 
-vanishing at infinity.  That is
+An input is specified on the lower portion of the left-most 
+shaded rectangle.  
+This will be denoted by the region $\Gamma_\mathrm{in}$.  
+All other boundaries of $\Omega$ which are also boundaries of 
+$\Omega_i$ for $i = 1, 2$ will be denoted 
+$\Gamma_\mathrm{out}$.  
+Finally, the rest of the boundary will be denonted $\Gamma_D$.  
+
+On $\Gamma_\mathrm{in}$, there is a specified Dirichlet boundary condition:
+$f(\vec x, t)$, and on $\Gamma_D$ the Dirichlet condition is zero.
+Lastly, on $\Gamma_\mathrm{out}$ we specify an outflow boundary condition.
+In quantum mechanics, the momentum operator, 
+in this dimensionless system: $\hat{\vec p} = -\frac{i \hbar}{d} \nabla$.
+The outflow condition relates $\partial_t \psi$ with the momentum. 
+All together the boundary conditions are
 \begin{equation}
 		\label{eq:boundary-conditions}
-		\lim_{|\vec x| \to \infty} \Psi(\vec x, t) = 0, \quad 
-		\lim_{|\vec x| \to \infty} |\nabla \Psi(\vec x, t)| = \vec 0
-\end{equation}
-This corresponds with the physical situation that 
-the probability of finding the particle infinitely far 
-away from either of the cylinders is zero.
-
-\subsection{Initial Conditions}
-
-Since the Schr\"odinger equation is only a first order equation in time,
-only $\Psi(\vec x, 0)$ needs to be specified.  
-For this, we consider the initial condition corresponding to 
-a particle in its lowest energy state, confined to the first cylinder.  
-In this situation, only $\Omega_0$ is present, and the potential reads
-\begin{equation}
-		\label{eq:potential-one-cylinder}
-		V^{(0)}(\vec x) = 
+		\text{Boundary Conditions} = 
 		\begin{cases}
-				-1 & \vec x \in \Omega_0 \\
-				0 & \text{otherwise}
+				\Psi(\vec x, t) = 0 & \vec x \in \Gamma_D \\
+				\Psi(\vec x, t) = f(\vec x, t) & \vec x \in \Gamma_\mathrm{in}
+				\\
+				\pder{\Psi}{t} = -2i  \pder{\Psi}{n} & 
+				\vec x \in \Gamma_\mathrm{out}
 		\end{cases}
 \end{equation}
+Where $f(\vec x, t)$ is a prespecified function.
 
-For a quantum particle, its energy states are determined from 
-the spatial component of its equation after separation of variables.
-Letting $\Psi(\vec x, t) = \psi(\vec x) T(t)$, then this reads
+Finally for simplicity, we take an initial condition of 
+an empty system: i.e.
 \[
-		i \frac{T'}{T} = \frac{-\nabla^2 \psi + \nu V^{(0)} \psi}{\psi} 
-		= \epsilon
+		\Psi(\vec x, 0) = 0
 .\] 
-Here $\epsilon$, the eigenvalue, corresponds to 
-the energy level of the quantum state \cite{griffiths-quantum}.
-Disregarding the time component,
-the initial condition for the above problem
-solves
-\begin{equation}
-		\label{eq:init-cond-requirement}
-		-\nabla^2 \Psi(\vec x, 0) + \nu V^{(0)} \Psi(\vec x, 0) = 
-		\epsilon \Psi(\vec x, 0)
-.\end{equation}
-Furthermore, this holds for the smallest possible value of 
-$\epsilon$.  
 \end{document}
