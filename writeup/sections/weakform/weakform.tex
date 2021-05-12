@@ -7,138 +7,151 @@
 Since FEniCS will be doign the heavy lifting for the matrix construction
 and equation solving, the weak formulation will be optimized to fit 
 this framework.  
-FEniCS is designed around elliptic-like problems,
-so the problem will be discretized in time first, 
-then each update will be computed by solving an elliptic problem.
+FEniCS does not support complex numbers.  
+To deal with this, we will use FEniCS to build the matrix formulation 
+of the problem, then deal with an ODE solver which can handle complex
+numbers. 
 
-The time discretization applied to the Schr\"odinger equation gives
-\[
-		i \frac{\Psi^{n+1}(\vec x) - \Psi^n(\vec x)}{\Delta t} = 
-		\frac{1}{2} \left[-\nabla^2 \Psi^{n+1} - 
-		\nabla^2 \Psi^n + \nu V \Psi^{n+1} + \nu V \Psi^n\right]
-.\] 
-Where $t^n = n \Delta t$ and 
-$\Psi^n(\vec x) = \Psi(\vec x, t^n)$.  
-Crank-Nicolson can be shown to be second order in time.
-
-Rearranging this above expression gives
-\[
-		i \Psi^{n+1} + \frac{\Delta t}{2} \nabla^2 \Psi^{n+1} - 
-		\frac{\nu \Delta t}{2} V \Psi^{n+1} = 
-		i \Psi^n - \frac{\Delta t}{2} \nabla^2 \Psi^n + 
-		\frac{\nu \Delta t}{2} V \Psi^n
-.\] 
-At each time step, we can assume $\Psi^n$ is known, 
-with $\Psi^0 \equiv 0$ by the initial condition. 
-Therefore this is now an elliptic problem for the $n+1$'st time step.
-
-Next, for a quantum mechanical problem: the wavefunction
-must be continuously differentiable, which ensures 
-that position and momentum are well defined everywhere.
-To guarentee this in $\R^2$ we require 
-$\Psi \in H^4(\Omega)$.  
-
-To build the weak form, let 
-\[
-		\mathcal V = \{u \in H^4(\Omega) : 
-		\left.u\right|_{\Gamma_D \cup \Gamma_\mathrm{in}} = 0\}
-.\] 
-This will be our test function space.
-Let $\Phi \in \mathcal V$.  Then the weak formulation 
-comes from 3 terms:
-\[
-  \int_\Omega \Phi \Psi \, dx, \quad 
-  \int_\Omega \Phi \nabla^2 \Psi \, dx, \quad 
-  \int_\Omega \Phi V \Psi \, dx
-.\] 
-Here we are considering the real and imaginary components of $\Psi$ separately.
 In sticking with the quantum mechanical theme, 
-I will be using bra-ket notation.
+I will be using bra-ket notation (little bit late for Halloween, but okay).
 That is 
 $\Psi$ will be known as $\ket{\Psi}$.  
+The term inside the ket: $\ket{\cdot}$ can be anything,
+as it is a label.  For now we will leave it as $\ket{\Psi}$.
 The bar and angle denote that $\Psi$ is an element of the 
 Hilbert space $\mathcal V$. 
-Next I will denote the linear functional:
+Next I will denote the linear functional by a bra:
 \[
-		\bra{\Phi} \cdot = \int_\Omega \Phi \cdot \, dx
+		\bra{\Phi} \cdot = \int_\Omega \Phi^* \cdot \, dx
 .\]
 That is $\bra{\Phi}$ is the linear functional 
-built by the $L^2$ inner product with $\ket{\Phi}$.  
+built by the $L^2$ inner product with $\ket{\Phi}$.
+Again, what is inside the $\bra{\times}$ is simply a label,
+and for now it will be left as $\bra{\Phi}$
 Finally an inner product with an operator $\mathcal O$ will be denoted:
 \[
 		\bra{\Phi} \mathcal O \ket{\Psi} = 
-		\int_\Omega \Phi \mathcal O(\Psi) \, dx
+		\int_\Omega \Phi^* \mathcal O[\Psi] \, dx
 .\] 
-The first and second components of the variational form 
-are not interesting.  
-Instead what is interesting is the middle term.
+
+On the interior of the domain, the Schr\"odinger equation can now
+be written in variational form:
+\[
+		  i \bra{\Phi} \partial_t \ket{\Psi} 
+		   =  \bra{\Phi} -\nabla^2 \ket{\Psi} + 
+		  \bra{\Phi} V \ket{\Psi}
+.\]
+At this point, we can integrate the laplacian term by parts:
 \[
   \begin{split}
-		  \int_\Omega \Phi \nabla^2 \Psi \, dx 
-		  & = \bra{\Phi}\nabla^2 \ket{\Psi} \\
-		  & = \int_{\partial \Omega} \Phi \pder{\Psi}{n} \, d\sigma - 
-		  \int_\Omega \nabla \Phi \cdot \nabla \Psi \, dx \\
-		  & = \int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi}{n} \, d\sigma - 
-		  \bra{\nabla \Phi}\ket{\nabla \Phi}
+		  \bra{\Phi} -\nabla^2 \ket{\Psi} 
+		  & = -\int_\Omega \Phi^* \nabla^2 \Psi \, dx \\
+		  & = -\int_{\partial \Omega} \Phi^* \pder{\Psi}{n} \, d\sigma + 
+				  \int_\Omega \nabla \Phi^* \cdot \nabla \Psi \, dx \\
+		  & = -\int_{\partial \Omega} \Phi^* \pder{\Psi}{n} \, d\sigma + 
+		  \bra{\nabla \Phi} \ket{\nabla \Psi}
   \end{split}
 .\] 
-Due to the boundary condition on $\Gamma_\mathrm{out}$, we know
+For $\mathcal V$ we choose the subspace of $H^1(\Omega)$ which is 
+zero on both $\Gamma_D$ and $\Gamma_\mathrm{in}$.  
+This term then becomes
 \[
-		\pder{\Psi}{t} = i \pder{\Psi}{n}
-.\] 
-Using the Crank-Nicolson time discretization on the boundary
-changes this to
-\[
-		\frac{\Psi^{n+1} - \Psi^n}{\Delta t} = 
-		\frac{i}{2} \left(\pder{\Psi^{n+1}}{n} + \pder{\Psi^n}{n}\right)
-.\] 
-Therefore
-\[
-		\int_{\Gamma_\mathrm{out}} \Phi \Psi^{n+1} \, d\sigma - 
-		\frac{i \Delta t}{2} 
-		\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^{n+1}}{n} \, d\sigma = 
-		\int_{\Gamma_\mathrm{out}} \Phi \Psi^n \, d\sigma + 
-		\frac{i \Delta t}{2} 
-		\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^n}{n} \, d\sigma
-.\] 
-Giving
-\[
-		\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^{n+1}}{n} \, d\sigma = 
-		\frac{2i}{\Delta t} \left(
-				-\int_{\Gamma_\mathrm{out}} \Phi \Psi^{n+1} \, d\sigma + 
-				\int_{\Gamma_\mathrm{out}} \Phi \Psi^n \, d\sigma + 
-				\frac{i \Delta t}{2} 
-				\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi^n}{n} \, d\sigma
-		\right)
-.\] 
-Therefore the weak form of the PDE reads
-\begin{equation}
-		\label{eq:weak-form-mark-1}
-		\begin{split}
-				i \bra{\Phi}\ket{\Psi^{n+1}} 
-				& - 
-				\frac{\Delta t}{2} \bra{\nabla \Phi}\ket{\nabla \Psi^{n+1}} -
-				\frac{\nu \Delta t}{2} \bra{\Phi} V \ket{\Psi^{n+1}} -
-				i \int_{\Gamma_\mathrm{out}} \Phi \Psi^{n+1} \, d\sigma = \\
-				& i \bra{\Phi}\ket{\Psi^n} + 
-				\frac{\Delta t}{2} \bra{\nabla \Phi}\ket{\nabla \Psi^n} + 
-				\frac{\nu \Delta t}{2} \bra{\Phi} V \ket{\Psi^n} - 
-				i \int_{\Gamma_\mathrm{out}} \Phi \Psi^n \, d\sigma 
-		\end{split}
-\end{equation}
-
-FEniCS uses UFL - unified form assembly language, which 
-is able to take a (nearly verbatim mathematically formatted) 
-variational form, and convert this into a matrix system and solve 
-automatically.  
-The only adjustment that needs to be made is to the boundary integrals. 
-To enforce the integration take place only on 
-$\Gamma_{\mathrm{out}}$, we use 
-\[
-		\int_{\Gamma_\mathrm{out}} \Phi \Psi \, d\sigma = 
-		\int_{\partial \Omega} \Phi \mathbbm 1(\vec x \in \Gamma_\mathrm{out})
-		\Psi \, d\sigma
+		\bra{\Phi} -\nabla^2 \ket{\Psi} = 
+		-\int_{\Gamma_\mathrm{out}} \Phi^* \pder{\Psi}{n} \, d\sigma 
+		+ \bra{\nabla \Phi} \ket{\nabla \Psi}
 .\] 
 
+Next, on $\Gamma_\mathrm{out}$, the boundary condition was chosen 
+such that 
+\[
+		\pder{\Psi}{t} = i \pder{\Psi}{n} \implies 
+		\int_{\Gamma_\mathrm{out}} \Phi^* \pder{\Psi}{n} \, d\sigma = 
+		-i \int_{\Gamma_\mathrm{out}} \Phi^* \pder{\Psi}{t} \, d\sigma
+.\] 
+Therefore the Schr\"odinger equation now reads
+\[
+		i \bra{\Phi} \partial_t \ket{\Psi} = 
+		\bra{\nabla \Phi} \ket{\nabla \Psi} + 
+		\bra{\Phi} V \ket{\Psi} + 
+		i \int_{\Gamma_\mathrm{out}} \Phi^* \pder{\Psi}{t} \, d\sigma
+.\] 
 
+At this point, we can make a finite dimensional approximation.
+FEniCS will generate a triangulation, $\mathcal T_h$ for 
+$\Omega$.  
+Using standard $C^0-P^1$ elements, 
+we get a Lagrange basis for our finite dimensional subspace of 
+$\mathcal V$.
+It should be noted we are taking $\mathcal V$ to be a real space,
+the complex parts of the wave functions will be incorperated into 
+the time variation.
+Let this basis for $\mathcal V$ be denoted by $\phi_j$ for $j = 0, 1, ..., N$. 
+We then make the ansantz
+\[
+		\Psi(x, t) = \sum_j \alpha_j(t) \phi_j(x)
+.\] 
+Here $\alpha_j : \R_+ \to \C$ are complex functions, 
+and $\phi_j$ are real.
+This is where bra-ket notation can really shine.  
+Since what's inside the bra/ket is only an indicator, we can take this
+to be the numbering of $\phi_j$:
+\[
+  \int_\Omega \phi_k \phi_\ell \, dx \to 
+  \bra{k} \ket{\ell}, \quad 
+  \int_\Omega \nabla \phi_k \cdot \nabla \phi_\ell \, dx \to 
+  \bra{\nabla, k} \ket{\nabla, \ell}, \quad \text{etc}
+.\] 
+Furthermore this lets us write things like
+\[
+		\ket{\Psi} = \sum_j \alpha_j(t) \ket{j}
+.\] 
+In this notation, the Schr\"odinger equation reads
+\[
+		i \sum_\ell \underbrace{\bra{k} \ket{\ell}}_{M_{k\ell}} \alpha_\ell' = 
+		\sum_\ell \left(\underbrace{\bra{\nabla, k} \ket{\nabla \ell}}_{
+				S_{k\ell}} + 
+		\underbrace{\bra{k} V \ket{\ell}}_{V_{k\ell}}\right) \alpha_\ell + 
+		i \sum_\ell \alpha_\ell' 
+		\underbrace{
+				\int_{\Gamma_\mathrm{out}} \phi_k \phi_\ell 
+		\, d\sigma}_{B_{k\ell}}
+.\] 
+Where $M$ is the mass matrix, $S$ the stiffness matrix,
+$V$ is a ``potential'' matrix, and $B$ is a ``boundary'' matrix.
+In matrix form this reads
+\[
+		i (M - B) \alpha' = (S + V) \alpha
+.\]
+Here $M, B, S, V$ are all real matrices, and $\alpha$ are complex vectors.
+
+Once the matrices are assembled, time stepping is done using the 
+Crank-Nicolson method.  
+This reads to solving
+\[
+		\left[i (M - B) - \frac{\Delta t}{2} (S + V)\right] \alpha^{n+1} = 
+		\left[i (M - B) + \frac{\Delta t}{2} (S + V) \right] \alpha^n
+.\] 
+For $\alpha^{n+1}$ where $\alpha^n = \alpha(n \Delta t)$ is assumed to
+be given.
+The initial condition: $\Psi \equiv 0$ translates to 
+$\alpha^0 = 0$.
+
+It should be noted that to account for the input boundary condition,
+we can index the matrices using 
+$I_D$ for the nodes on $\Gamma_D$ and 
+$I_\mathrm{in}$ for the nodes on $\Gamma_\mathrm{in}$.
+Since on $\Gamma_D$, $\Psi = 0$ this does not contribute.  
+However we can extract the free indices (those not in $I_D$ or $I_\mathrm{in}$)
+and extract those on $I_\mathrm{in}$.  
+Then the problem reads as:
+\[
+  \begin{split}
+		  \left[i (M - B) - \frac{\Delta t}{2} (S + V)\right]_\mathrm{free} 
+		  \alpha^{n+1}_\mathrm{free}
+		  & = \left[i(M - B) + \frac{\Delta t}{2} (S + V)\right]_\mathrm{
+		  free + in} \alpha^n_\mathrm{free + in} \\
+		  & - \left[i(M - B) + \frac{\Delta t}{2} (S + V)\right]_\mathrm{in} 
+		  f\left(x\in \Gamma_\mathrm{in}, t^{n+1}\right)
+  \end{split}
+.\] 
 \end{document}

@@ -110,11 +110,10 @@ def mark_tubes(mesh):
     
     tubes = MeshFunction("size_t", mesh, 2)
     input_tube.mark(tubes, 1)
-    output_tube.mark(tubes, 1)
-    ring_resonator.mark(tubes, 1)
-    
-    outbound.mark(tubes, 2)
-    
+    output_tube.mark(tubes, 2)
+    ring_resonator.mark(tubes, 3)
+    outbound.mark(tubes, 4)
+        
     return tubes
 
 
@@ -122,7 +121,7 @@ if __name__ == "__main__":
     
     print("Building test mesh")
     
-    nx = 40
+    nx = 100
     mesh = build_mesh(nx, nx)
     
     print("Marking tubes")
@@ -130,6 +129,7 @@ if __name__ == "__main__":
 
     print("Plotting")
     plot(mesh)
+    plt.savefig("mesh.pdf")
     plt.show()
     
     plot(tubes)

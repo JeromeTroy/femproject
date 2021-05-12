@@ -46,7 +46,7 @@ class Potential(UserExpression):
 
         """
         
-        if self.tubes[cell.index] == 1:
+        if self.tubes[cell.index] >= 1:
             value[0] = 0
             
         else:
@@ -65,16 +65,16 @@ class Potential(UserExpression):
         """
         return ()
         
-class OutboundExtractor(Potential):
+class OutputExtractor(Potential):
     """
-    Extracts boundary term which is only on outbound sides
+    Extracts output tube
     Implements same methods as Potential, overrides evel_cell
     """
     
     def eval_cell(self, value, x, cell):
         """
         Evaluates function and assigns value
-        1 on outbound boundary
+        1 on output tube
         0 elsewhere
 
         Parameters
@@ -97,6 +97,69 @@ class OutboundExtractor(Potential):
         else:
             value[0] = 0
             
+class InputExtractor(Potential):
+    """
+    Extracts input tube
+    Implements same methods as Potential, overrides evel_cell
+    """
+            
+    def eval_cell(self, value, x, cell):
+        """
+        Evaluates function and assigns value
+        1 on input tube
+        0 elsewhere
+
+        Parameters
+        ----------
+        value : basically a pointer
+            value to be assigned.
+        x : array of length 2
+            coordinate to be evaluated.
+        cell : mesh cell
+            cell in question.
+
+        Returns
+        -------
+        None.
+
+        """
+        if self.tubes[cell.index] == 1:
+            value[0] = 1
+        
+        else:
+            value[0] = 0
+            
+class OutboundExtractor(Potential):
+    """
+    Extracts outbound boundary
+    Implements same methods as Potential, overrides evel_cell
+    """
+            
+    def eval_cell(self, value, x, cell):
+        """
+        Evaluates function and assigns value
+        1 on input tube
+        0 elsewhere
+
+        Parameters
+        ----------
+        value : basically a pointer
+            value to be assigned.
+        x : array of length 2
+            coordinate to be evaluated.
+        cell : mesh cell
+            cell in question.
+
+        Returns
+        -------
+        None.
+
+        """
+        if self.tubes[cell.index] == 4:
+            value[0] = 1
+        
+        else:
+            value[0] = 0
      
 if __name__ == "__main__":
     

@@ -129,5 +129,20 @@ dmypy.json
 .pyre/
 
 # latex stuff
-docs/.log
-docs/.aux
+*.log
+*.aux
+*.vrb
+*.bbl
+*.blg
+*.nav
+*.vrb
+
+# figures and animations
+*.h5
+*.xdmf
+*.pdf
+*.png
+*.avi
+
+# archives
+*.zip

@@ -1,7 +1,37 @@
 \begin{thebibliography}{1}
 
+\bibitem{better-boundary}
+{\sc A.~Arnold}, {\em Open boundary conditions for wave propagation problems on
+  unbounded domains}.
+\newblock 2007.
+
+\bibitem{diagnostics}
+{\sc S.~T. Fard, S.~M. Grist, V.~Donzella, S.~A. Schmidt, J.~Flueckiger,
+  X.~Wang, W.~Shi, A.~Millspaugh, M.~Webb, D.~M. Ratner, K.~C. Cheung, and
+  L.~Chrostowski}, {\em Label-free silicon photonic biosensors for use in
+  clinical diagnostics}, International Society for Optical Engineering,
+  (2013).
+
 \bibitem{griffiths-quantum}
 {\sc D.~J. Griffiths}, {\em Introduction to Quantum Mechanics}, Pearson
   Education, Inc., New Jersey, 2005.
+
+\bibitem{fenics-book}
+{\sc A.~Logg, K.-A. Mardal, G.~N. Wells, et~al.}, {\em Automated Solution of
+  Differential Equations by the Finite Element Method}, Springer, 2012.
+
+\bibitem{spp-ring-resonator}
+{\sc T.-B. Wang, X.-W. Wen, C.-P. Yin, and H.-Z. Wang}, {\em The transmission
+  characteristics of surface plasmon polaritons in ring resonator}, The Optical
+  Society,  (2009).
+
+\bibitem{cancer-detection}
+{\sc A.~L. Washurn, L.~C. Gunn, and R.~C. Bailey}, {\em Label-free quantitation
+  of a cancer biomarker in complex media using silicon photonic microring
+  resonators}, Analytical Chemistry,  (2009).
+
+\bibitem{wasserman-statistics}
+{\sc L.~Wasserman}, {\em All of Statistics: A Concise Course in Statistical
+  Inference}, Springer, New York, 2005.
 
 \end{thebibliography}

@@ -1,0 +1,57 @@
+\documentclass[../../main.tex]{subfiles}
+
+\begin{document}
+
+\section{Results and Discussion}
+
+We tested the solution scheme using a quasi-uniform mesh
+with the minimum cell diameter: $h_\mathrm{min} = 0.1$.
+The time stepping used a maximum time of 5 with $5000$ time steps.  
+Below are several figures describing the time evolution of the problem.
+Each figure has the probability density function (pdf) plotted,
+where the pdf is given by
+\[
+		\rho(x, t) = \Psi^*(x, t) \Psi(x, t) = 
+		\sum_j |\alpha_j(t)|^2 \phi_j^2(x)
+.\] 
+Which is pointwise multiplication.  
+It should be noted that what is computed is not a pdf, since its 
+integral may not be 1.  
+However taking ratios of integrals will give the relative probabilities 
+of the particle existing in specified regions 
+\cite{wasserman-statistics}. 
+Further, the pdf is plotted using a log scale, to better see
+regions of low probability.
+
+
+The results show that the wave carries its momentum through the system,
+and initially behaves as if it were a car going around a turn.  
+However after time $t = 1.5$, the system equilibrates,
+and the wave function no longer appears to exhibit a preferential 
+traversal direction.  These figures can be seen in the appendix.
+
+Next consider the transmission coefficient.  
+This is given by the output amplitude divided by the input 
+amplitude.  Here we compute this via the following ratio
+\begin{equation}
+		\label{eq:transmission}
+		C_\mathrm{trans} = \frac{
+		\bra{\Psi} \mathbbm 1_{\Omega_0} \ket{\Psi}}{
+		\bra{\Psi} \mathbbm 1_{\Omega_1} \ket{\Psi}} = 
+		\left(\int_{\Omega_1} \rho(x, t) \, dx\right)^{-1} 
+		\int_{\Omega_0} \rho(x, t) \, dx
+.\end{equation}
+This quantity is variable with time.  
+This can be seen in figure \ref{fig:trans-coef}.  
+Here the transmission coefficient can be seen to peak at 
+just below 4\%.  
+Furthermore it can be seen transmission starts to occur after time 
+$t = 1$.  
+It should be noted that the eigenvalues of the Schr\"odinger equation
+are all purely imaginary, which lie on the boundary 
+of the stability region of the time stepping method - Crank-Nicolson.
+As a result, it is not surprising to see some high oscillation modes
+in the transmission coefficient.
+
+
+\end{document}

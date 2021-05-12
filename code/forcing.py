@@ -32,7 +32,6 @@ SIN_X_FREQ = np.pi / domain_params["tube_diameter"]
 # how quickly f oscillates in time
 oscillating_frequency = 20
 
-# TODO: make a 2 x 1 vector
 def forcing(x, t, momentum):
     """
     Forcing function for the problem
@@ -73,8 +72,6 @@ def forcing(x, t, momentum):
     
     # apply momentum
     result *= np.exp(1j * momentum)
-    if t > 1 / oscillating_frequency:
-        result = 0
     
     return result
             

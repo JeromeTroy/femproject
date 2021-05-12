@@ -4,7 +4,7 @@
 
 \title{Quantum Tunneling via Finite Element}
 \author{Jerome Troy}
-\date{ April 9, 2021}
+\date{ May 13, 2021}
 
 \begin{document}
 \maketitle
@@ -15,10 +15,33 @@
 
 \subfile{sections/weakform/weakform}
 
+\subfile{sections/results/results}
+
+\section{Conclusions}
+
+As a proof-of-concept experiment,
+we were able to deduce the transmission of
+a quantum mechanical particle through a 
+ring resonator using finite elements.  
+
+Future improvements could include
+testing various geometries or input 
+conditions, as well as improving the 
+nonreflecting condition on the output boundaries.
+According to \cite{better-boundary}, 
+an optimal non-reflecting boundary will involve 
+implementing a fractional time 
+derivative on the boundary.
+
+
 %\newpage
 
-\subfile{sections/finiteapprox/finiteapprox}
-
+\nocite{*}
 \bibliographystyle{siam}
 \bibliography{biblio.bib}
+
+\appendix
+
+\subfile{sections/appendix/figures}
+
 \end{document}

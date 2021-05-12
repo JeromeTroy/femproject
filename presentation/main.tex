@@ -15,6 +15,23 @@
 		\titlepage
 \end{frame}
 
+\begin{frame}{What are We Going to do?}
+\begin{itemize}
+		\item Photonics - building electric circuitry for 
+				photons rather than electrons
+		\item Why - photons travel at light speed (electrons are snails)
+		\item Photons don't interact with each other (easier to deal with)
+		\item Can play tricks with resonance to do computations
+\end{itemize}  
+
+\begin{figure}
+\centering
+\includegraphics[width=0.5\textwidth]{label-free-silicon-phootics-biosensors}
+\caption{Figure taken from S. T. Fard et. al.}
+\end{figure}
+
+\end{frame}
+
 \begin{frame}{An Overview of Quantum Mechanics}
   \begin{itemize}
   	\item \textbf{Heisenberg Uncertainty Principle} : ``
@@ -54,7 +71,7 @@
 	\item Nondimensionalize 
 			\[
 					\implies i \pder{\Psi}{t} = 
-					-\nabla^2 \Psi + V(\vec x) \Psi
+					-\nabla^2 \Psi + \nu V(\vec x) \Psi
 			\] 
 	\item An interesting question: \textbf{Can we understand tunnelling?}
   \end{itemize}
@@ -65,13 +82,15 @@
 	\item Particle ``trapped'' (in the classical regime) in a potential
 			well can escape!
 	\item Consider the following example 
+	\item Input boundary: $\Gamma_\mathrm{in}$, 
+			Other blue boundaries: $\Gamma_\mathrm{out}$,
+			all other boundaries: $\Gamma_D$
 
   \begin{center}
   \includegraphics[width=0.5\textwidth]
   {../writeup/sections/intro/system-sketch.png}
   \end{center}
 
-	\item Particle may tunnel to other side of domain
   \end{itemize}
 \end{frame}
 
@@ -91,10 +110,17 @@
 			i \bra{\Phi} \partial_t \ket{\Psi} = 
 			\bra{\nabla \Phi} \ket{\nabla \Psi} + 
 			\bra{\Phi} V \ket{\Psi} + 
-			\int_{\Gamma_\mathrm{out}} \Phi \pder{\Psi}{n} \, d\sigma
+			\int_{\Gamma_\mathrm{out}} \Phi^* \pder{\Psi}{n} \, d\sigma
 			\] 
 	\item $\Phi$ zero on outer boundary and input boundary, 
 			nonzero on other (blue boundaries), wave can escape this way
+	\item Enforce open boundary on $\Gamma_\mathrm{out}$:
+			\[
+					\pder{\Psi}{t} = i \pder{\Psi}{n} \implies 
+					\int_{\Gamma_\mathrm{out}} \Phi^* \pder{\Psi}{n} \, d\sigma
+					= i \pder{}{t} \int_{\Gamma_\mathrm{out}} 
+					\Phi^* \Psi \, d\sigma
+			.\] 
 
 \end{itemize}
 \end{frame}
@@ -104,7 +130,7 @@
 		\item Boundary wrapper:
 				\[
 						B(\Phi, \Psi) = \int_{\Gamma_\mathrm{out}}
-						\Phi \pder{\Psi}{n} \, d\sigma
+						\Phi^* \Psi \, d\sigma
 				.\] 
 		\item Build triangulation $\mathcal T_h$ on $\Omega$, let 
 				$\phi_j(\vec x)$ be a set of basis functions for 
@@ -119,6 +145,8 @@
 			\right] 
 					\lambda_k(t)
 			\end{split}\] 
+	\item $\phi_j$ are real functions in $H^1(\Omega)$,
+			$\lambda_k$ are complex functions
 	\item Mass matrix: 
 			$\bra{\phi_j}\ket{\phi_k}$, 
 			Stiffness matrix:
@@ -130,10 +158,80 @@
 \end{itemize}
 \end{frame}
 
+\begin{frame}[fragile]
+\frametitle{Doing this in FEniCS}
+
+Build mesh:
+\begin{lstlisting}
+  origin = Point(0, 0)
+  farcorner = Point(domainwidth, domainlength)
+  mesh = RectangleMesh(origin, farcorner, nx, ny)
+\end{lstlisting} 
+
+Variational forms
+
+\begin{lstlisting}
+  H1 = FunctionSpace(mesh, "CG", 1)
+  Psi = TrialFunction(H1)
+  Phi = TestFunction(H1)
+  mass = assemble(Phi * Psi * dx)
+  stiffness = assemble(
+    dot(grad(Phi), grad(Psi)) * dx)
+  boundary = assemble(Phi * Psi * 
+    [boundaryindicator] * ds)
+  potential = assemble(Phi * V * Psi * dx)
+
+\end{lstlisting}
+\end{frame}
+
 \begin{frame}{Time Stepping and Solution}
+\begin{itemize}
+		\item Crank-Nicolson method used for time stepping
+		\item Domain : $h_\mathrm{min} = 0.1$
+		\item $T_\mathrm{max} = 5$, $n_t = 1000 \implies 
+				\Delta t = 0.005$
+\end{itemize}
+
+\centering
+\includegraphics[width=0.8\textwidth]{../writeup/wave_enters_ring}
+
+\end{frame}
+
+\begin{frame}{Transmission Coefficient}
+\begin{itemize}
+		\item Computation: 
+				\[
+						C_\mathrm{trans} = 
+						\frac{\bra{\Psi} \mathbbm 1_{\Omega_1} \ket{\Psi}}
+						{\bra{\Psi} \mathbbm 1_{\Omega_2} \ket{\Psi}}
+				.\] 
+
+\end{itemize}
+
+\centering
+\includegraphics[width=0.7\textwidth]{../writeup/trans_coef}
   
 \end{frame}
-\begin{frame}{References}
+
+\begin{frame}{Future Improvements}
+\begin{itemize}
+		\item Better boundary condition
+		\item Proper B/C involves fractional derivatives
+				\[
+						\partial_x \Psi = \sqrt{-i \partial_t - \partial_{yy}} \Psi 
+						\quad x \in \Gamma_\mathrm{out}
+				.\] 
+		\item Test various geometries
+		\item Goal is to get optimal resonance for specified input frequency
+				\[
+						(\omega_\mathrm{in}, R_\mathrm{ring}) \mapsto C_\mathrm{trans}
+				.\]
+		\item Apply Maxwell equations - photons are electromagnetic wave packets
+\end{itemize}  
+\end{frame}
+
+\begin{frame}[allowframebreaks]
+		\frametitle{References}
 		\bibliography{../writeup/biblio.bib}
 		\bibliographystyle{alpha}
 		\nocite{*}

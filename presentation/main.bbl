@@ -1,13 +1,46 @@
-\begin{thebibliography}{Was05}
+\newcommand{\etalchar}[1]{$^{#1}$}
+\begin{thebibliography}{WWYW09}
+
+\bibitem[Arn07]{better-boundary}
+Anton Arnold.
+\newblock Open boundary conditions for wave propagation problems on unbounded
+  domains.
+\newblock 2007.
+
+\bibitem[FGD{\etalchar{+}}13]{diagnostics}
+Sahba~Talebi Fard, Samantha~M. Grist, Valentina Donzella, Shon~A. Schmidt,
+  Jonas Flueckiger, Xu~Wang, Wei Shi, Andrew Millspaugh, Mitchell Webb,
+  Daniel~M. Ratner, Karen~C. Cheung, and Lukas Chrostowski.
+\newblock Label-free silicon photonic biosensors for use in clinical
+  diagnostics.
+\newblock {\em International Society for Optical Engineering}, 2013.
 
 \bibitem[Gri05]{griffiths-quantum}
 David~J. Griffiths.
 \newblock {\em Introduction to Quantum Mechanics}.
 \newblock Pearson Education, Inc., New Jersey, 2005.
 
+\bibitem[LMW{\etalchar{+}}12]{fenics-book}
+Anders Logg, Kent-Andre Mardal, Garth~N. Wells, et~al.
+\newblock {\em Automated Solution of Differential Equations by the Finite
+  Element Method}.
+\newblock Springer, 2012.
+
 \bibitem[Was05]{wasserman-statistics}
 Larry Wasserman.
 \newblock {\em All of Statistics: A Concise Course in Statistical Inference}.
 \newblock Springer, New York, 2005.
+
+\bibitem[WGB09]{cancer-detection}
+Adam~L. Washurn, L.~Cary Gunn, and Ryan~C. Bailey.
+\newblock Label-free quantitation of a cancer biomarker in complex media using
+  silicon photonic microring resonators.
+\newblock {\em Analytical Chemistry}, 2009.
+
+\bibitem[WWYW09]{spp-ring-resonator}
+Tong-Biao Wang, Xie-Wen Wen, Cheng-Ping Yin, and He-Zhou Wang.
+\newblock The transmission characteristics of surface plasmon polaritons in
+  ring resonator.
+\newblock {\em The Optical Society}, 2009.
 
 \end{thebibliography}

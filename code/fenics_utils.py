@@ -4,10 +4,15 @@
 Created on Tue Apr 27 19:30:22 2021
 
 @author: jerome
+
+Helper functions for navigating FEniCS
 """
 
-from fenics import as_backend_type, assemble
+from fenics import as_backend_type, assemble, Function, dx, XDMFFile
 from scipy.sparse import csr_matrix
+import numpy as np
+
+from potential import Potential
 
 def convert_fenics_form_to_csr(form):
     """
@@ -25,8 +30,10 @@ def convert_fenics_form_to_csr(form):
 
     """
     
+    # assemble the ufl form and convert it to a petsc sparse matrix
     petsc_matrix = as_backend_type(assemble(form)).mat()
     
+    # convert the petsc sparse matrix to a scipy.sparse matrix
     sparse_matrix = csr_matrix(petsc_matrix.getValuesCSR()[::-1], 
                                shape=petsc_matrix.size)
     
@@ -82,9 +89,112 @@ def get_coordinates_on_boundary(fun_space, boundary_indices):
         boundary_coordinates[j, :] = [x_j, y_j] on the boundary.
 
     """
+    
+    # all coordinates for the problem
     all_coordinates = fun_space.tabulate_dof_coordinates()
+    
+    # index on the boundary
     boundary_coordinates = all_coordinates[boundary_indices, :]
+    
     return boundary_coordinates
+
+
+def integrate_on_domain(solution, fun_space, cutoff=None):
+    """
+    Integrate a solution (on a subdomain)
+
+    Parameters
+    ----------
+    solution : vector of floats
+        solution vector.
+    fun_space : FEniCS FunctionSpace
+        function space on which the solution is defined.
+    cutoff : FEniCS Expression, optional
+        Indicator function for subdomain on which integration 
+        should take place. 
+        The default is None, in which case the integration takes place
+        on the whole domain.
+
+    Returns
+    -------
+    integral : float
+        integral value.
+
+    """
+    # construct a fenics function and assign values
+    u = Function(fun_space)
+    u.vector()[:] = solution
+    
+    # initialize
+    integral = None
+    
+    # integration
+    if cutoff is None:
+        # no domain specified - default to entire domain
+        integral = assemble(u * dx)
+        
+    else:
+        # build a cutoff for that domain
+        
+        # integrate
+        integral = assemble(u * cutoff * dx)
+        
+    return integral
+    
+    
+def build_xdmf_file(fname):
+    """
+    Build an XDMF File
+
+    Parameters
+    ----------
+    fname : string
+        file name.
+
+    Returns
+    -------
+    xdmf : XDMFFIle
+        output file.
+
+    """
+    xdmf = XDMFFile(fname)
+    xdmf.parameters["flush_output"] = True
+    xdmf.parameters["functions_share_mesh"] = True
+    xdmf.parameters["rewrite_function_mesh"] = False
+
+    return xdmf
+
+def write_soln_to_file(xdmf, solns, times, empty_function, save_freq=1):
+    """
+    Write solution to xdmf
+
+    Parameters
+    ----------
+    xdmf : XDMFFile
+        output file.
+    solns : array of floats (nx  x nt)
+        solution at each node in x and time.
+    times : array of floats
+        time nodes.
+    empty_function : FEniCS Function
+        function template to write data to
+    save_freq : int, optional
+        frequency to save. The default is 1 (save each time step).
+
+    Returns
+    -------
+    xdmf : XDMFFile
+        same XDMFFile, just modified.
+
+    """
+    
+    for j in range(0, len(times), save_freq):
+        # assign to function which is used in XDMF
+        empty_function.vector()[:] = np.power(np.abs(solns[:, j]), 2)
+        xdmf.write(empty_function, times[j])
+
+    return xdmf
+
 if __name__ == "__main__":
     
     print("Testing")

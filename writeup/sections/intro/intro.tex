@@ -6,7 +6,8 @@
 
 In this paper, we examine tunnelling solutions to the 
 fundamental equation in quantum mechanics: the Schr\"odinger equation
-for a single particle.
+for quantum particles which only interact with an external potential (and not 
+with each other).
 \begin{equation}
 		\label{eq:schrodinger}
 		i \hbar \pder{\Psi}{t} = -\frac{\hbar^2}{2m} \nabla^2 \Psi + 
@@ -25,7 +26,7 @@ It passes by a ring-shaped well which is connected to a
 second well leaving the system
 (see figure \ref{fig:system-sketch}).
 Such a situation is the problem of interest in characterizing
-quantum ring resonators \textbf{TODO: citation}.
+quantum ring resonators \cite{spp-ring-resonator, cancer-detection, diagnostics}.
 
 \begin{figure}[h]
 		\centering
@@ -40,16 +41,36 @@ quantum ring resonators \textbf{TODO: citation}.
 		\label{fig:system-sketch}
 \end{figure}
 
+The question we will answer is the following.
+At steady state (or the long time limit), what is the probability
+the wave will tunnel through the ring, and to the other tube on 
+the right side of the domain? 
 We will solve this problem using finite elements, and using 
 the Python library FEniCS, which will take care of the heavy lifiting
-in constructing the finite element representation, as well as solving
-the resulting linear algebra system.
+in constructing the finite element representation.
 
 Let $\Omega_0$ be the region without color, a rectangle of width 
 $W$ and length $L$, excluding the colored regions.
-The two long rectangles, in order from left to right are $\Omega_1$ and 
-$\Omega_2$ respectively.  Finally, the ring in the center is 
-$\Omega_3$.
+The two long rectangles, in order from left to right are $\Omega_1$ 
+(the input tube) and 
+$\Omega_2$ (the output tube)respectively.  
+Finally, the ring in the center is 
+$\Omega_3$ (this is the ring resonator).
+The domain boundary is broken up as follows.  
+The input boundary, $\Gamma_\mathrm{in}$ is the bottom of the left
+tube, labeled input.  
+Here $\Psi$ is specified via a Dirichlet condition.
+On the other 3 blue boundaries, which we will call 
+$\Gamma_\mathrm{out}$, we enforce an open boundary and 
+allow the wave to leave the system.
+This is done through
+\[
+		\pder{\Psi}{t} - i\frac{\hbar}{m} \pder{\Psi}{n} = 0 \quad 
+		x \in \Gamma_\mathrm{out}
+.\] 
+Finally, on all uncolored boundaries, denoted 
+$\Gamma_D$, a zero-Dirichlet condition is enforced.
+
 
 
 
@@ -101,7 +122,7 @@ On $\Gamma_\mathrm{in}$, there is a specified Dirichlet boundary condition:
 $f(\vec x, t)$, and on $\Gamma_D$ the Dirichlet condition is zero.
 Lastly, on $\Gamma_\mathrm{out}$ we specify an outflow boundary condition.
 In quantum mechanics, the momentum operator, 
-in this dimensionless system: $\hat{\vec p} = -\frac{i \hbar}{d} \nabla$.
+in this dimensionless system: $\hat{\vec p} = -i  \nabla$.
 The outflow condition relates $\partial_t \psi$ with the momentum. 
 All together the boundary conditions are
 \begin{equation}
@@ -111,7 +132,7 @@ All together the boundary conditions are
 				\Psi(\vec x, t) = 0 & \vec x \in \Gamma_D \\
 				\Psi(\vec x, t) = f(\vec x, t) & \vec x \in \Gamma_\mathrm{in}
 				\\
-				\pder{\Psi}{t} = -2i  \pder{\Psi}{n} & 
+				\pder{\Psi}{t} = i  \pder{\Psi}{n} & 
 				\vec x \in \Gamma_\mathrm{out}
 		\end{cases}
 \end{equation}
