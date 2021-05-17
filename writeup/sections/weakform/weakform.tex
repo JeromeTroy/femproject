@@ -92,25 +92,15 @@ We then make the ansantz
 .\] 
 Here $\alpha_j : \R_+ \to \C$ are complex functions, 
 and $\phi_j$ are real.
-This is where bra-ket notation can really shine.  
-Since what's inside the bra/ket is only an indicator, we can take this
-to be the numbering of $\phi_j$:
+The Schr\"odinger equation reads in variational form
 \[
-  \int_\Omega \phi_k \phi_\ell \, dx \to 
-  \bra{k} \ket{\ell}, \quad 
-  \int_\Omega \nabla \phi_k \cdot \nabla \phi_\ell \, dx \to 
-  \bra{\nabla, k} \ket{\nabla, \ell}, \quad \text{etc}
-.\] 
-Furthermore this lets us write things like
-\[
-		\ket{\Psi} = \sum_j \alpha_j(t) \ket{j}
-.\] 
-In this notation, the Schr\"odinger equation reads
-\[
-		i \sum_\ell \underbrace{\bra{k} \ket{\ell}}_{M_{k\ell}} \alpha_\ell' = 
-		\sum_\ell \left(\underbrace{\bra{\nabla, k} \ket{\nabla \ell}}_{
+		i \sum_\ell 
+		\underbrace{\bra{\phi_k} \ket{\phi_\ell}}_{M_{k\ell}} \alpha_\ell' = 
+		\sum_\ell 
+		\left(\underbrace{\bra{\nabla \phi_k} \ket{\nabla \phi_\ell}}_{
 				S_{k\ell}} + 
-		\underbrace{\bra{k} V \ket{\ell}}_{V_{k\ell}}\right) \alpha_\ell + 
+		\underbrace{\bra{\phi_k} V \ket{\phi_\ell}}_{
+			V_{k\ell}}\right) \alpha_\ell + 
 		i \sum_\ell \alpha_\ell' 
 		\underbrace{
 				\int_{\Gamma_\mathrm{out}} \phi_k \phi_\ell 
